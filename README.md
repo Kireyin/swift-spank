@@ -12,7 +12,9 @@ Uses the Apple Silicon accelerometer (Bosch BMI286 IMU via IOKit HID) to detect 
 
 ## Install
 
-Build from source:
+Donwload the precompiled binary -> https://github.com/Kireyin/swift-spank/releases/latest
+
+Or build from source:
 
 ```bash
 swiftc -O -o spank spank.swift -framework IOKit -framework AVFoundation 
