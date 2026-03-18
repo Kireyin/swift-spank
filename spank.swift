@@ -14,7 +14,7 @@ import Darwin
 
 // MARK: - Version
 
-let version = "dev"
+let version = "0.1.0"
 
 // MARK: - Constants
 
