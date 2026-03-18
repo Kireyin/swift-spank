@@ -1,18 +1,6 @@
-<p align="center">
-  <img src="doc/logo.png" alt="spank logo" width="200">
-</p>
-
 # spank
 
-**English** | [简体中文][readme-zh-link]
-
 Slap your MacBook, it yells back.
-
-> "this is the most amazing thing i've ever seen" — [@kenwheeler](https://x.com/kenwheeler)
-
-> "I just ran sexy mode with my wife sitting next to me...We died laughing" — [@duncanthedev](https://x.com/duncanthedev)
-
-> "peak engineering" — [@tylertaewook](https://x.com/tylertaewook)
 
 Uses the Apple Silicon accelerometer (Bosch BMI286 IMU via IOKit HID) to detect physical hits on your laptop and plays audio responses. Single binary, no dependencies.
 
@@ -20,23 +8,13 @@ Uses the Apple Silicon accelerometer (Bosch BMI286 IMU via IOKit HID) to detect 
 
 - macOS on Apple Silicon (M2+)
 - `sudo` (for IOKit HID accelerometer access)
-- Go 1.26+ (if building from source)
+- Swift toolchain  
 
 ## Install
 
-Download from the [latest release](https://github.com/taigrr/spank/releases/latest).
+Build from source:
 
-Or build from source:
-
-```bash
-go install github.com/taigrr/spank@latest
-```
-
-> **Note:** `go install` places the binary in `$GOBIN` (if set) or `$(go env GOPATH)/bin` (which defaults to `~/go/bin`). Copy it to a system path so `sudo spank` works. For example, with the default Go settings:
->
-> ```bash
-> sudo cp "$(go env GOPATH)/bin/spank" /usr/local/bin/spank
-> ```
+[WIP]
 
 ## Usage
 
@@ -221,13 +199,9 @@ sudo launchctl unload /Library/LaunchDaemons/com.taigrr.spank.plist
 5. **Optional speed control** (`--speed`) — adjusts playback speed and pitch (0.5 = half speed, 2.0 = double speed)
 6. 750ms cooldown between responses to prevent rapid-fire, adjustable with `--cooldown`
 
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=taigrr/spank&type=date&legend=top-left)](https://www.star-history.com/#taigrr/spank&type=date&legend=top-left)
-
 ## Credits
 
-Sensor reading and vibration detection ported from [olvvier/apple-silicon-accelerometer](https://github.com/olvvier/apple-silicon-accelerometer).
+Forked from https://github.com/taigrr/spank
 
 ## License
 
