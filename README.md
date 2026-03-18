@@ -14,7 +14,9 @@ Uses the Apple Silicon accelerometer (Bosch BMI286 IMU via IOKit HID) to detect 
 
 Build from source:
 
-[WIP]
+```bash
+swiftc -O -o spank spank.swift -framework IOKit -framework AVFoundation 
+```
 
 ## Usage
 
