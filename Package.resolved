@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "applesiliconaccelerometer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Kireyin/AppleSiliconAccelerometer.git",
+      "state" : {
+        "revision" : "bc9be79341e7d295b48bb398c97446482d057dad",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 2
+}

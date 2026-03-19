@@ -29,21 +29,15 @@ sudo swift run spank --stdio         # JSON-based stdio control for GUI integrat
 sudo .build/release/spank
 ```
 
-> **Direct compilation** (no SPM): `swiftc -O -o spank Sources/spank/*.swift -framework IOKit -framework AVFoundation`
-
 There are no tests, no Makefile, and no CI pipeline.
 
 ## Architecture
 
-The project has two SPM targets:
+The project has one SPM executable target and one external dependency:
 
-### Library: `AppleSiliconAccelerometer`
+### External dependency: [`AppleSiliconAccelerometer`](https://github.com/Kireyin/AppleSiliconAccelerometer)
 
-A standalone, reusable library for reading the Apple Silicon accelerometer (Bosch BMI286 IMU via IOKit HID). Lives in `Sources/AppleSiliconAccelerometer/` with 3 files:
-
-- **`AccelSample.swift`** — `AccelSample` struct (x/y/z in g-force)
-- **`AccelRingBuffer.swift`** — Thread-safe NSLock ring buffer for samples
-- **`AccelReader.swift`** — IOKit HID device discovery, SPU driver wake-up, raw 22-byte report parsing, `AccelerometerError` enum. Takes an optional `LogHandler` closure instead of depending on a global debug flag. IOKit HID constants are file-private.
+A standalone, reusable library for reading the Apple Silicon accelerometer (Bosch BMI286 IMU via IOKit HID). Provides `AccelerometerReader`, `AccelerometerRingBuffer`, `AccelerometerSample`, and `AccelerometerError`.
 
 ### Executable: `spank`
 

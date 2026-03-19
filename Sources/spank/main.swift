@@ -103,8 +103,8 @@ func spankMain() {
     )
 
     // Start accelerometer
-    let accelBuffer = AccelRingBuffer()
-    let reader = AccelReader(ringBuffer: accelBuffer, logHandler: { msg in
+    let accelBuffer = AccelerometerRingBuffer()
+    let reader = AccelerometerReader(ringBuffer: accelBuffer, logHandler: { msg in
         debugLog(msg)
     })
 

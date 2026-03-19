@@ -5,23 +5,15 @@ import PackageDescription
 let package = Package(
     name: "swift-spank",
     platforms: [.macOS(.v13)],
-    products: [
-        .library(
-            name: "AppleSiliconAccelerometer",
-            targets: ["AppleSiliconAccelerometer"]
-        ),
+    dependencies: [
+        .package(url: "https://github.com/Kireyin/AppleSiliconAccelerometer.git", from: "1.0.0"),
     ],
     targets: [
-        .target(
-            name: "AppleSiliconAccelerometer",
-            path: "Sources/AppleSiliconAccelerometer",
-            linkerSettings: [
-                .linkedFramework("IOKit"),
-            ]
-        ),
         .executableTarget(
             name: "spank",
-            dependencies: ["AppleSiliconAccelerometer"],
+            dependencies: [
+                .product(name: "AppleSiliconAccelerometer", package: "AppleSiliconAccelerometer"),
+            ],
             path: "Sources/spank",
             linkerSettings: [
                 .linkedFramework("IOKit"),
