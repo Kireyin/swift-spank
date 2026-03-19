@@ -1,4 +1,5 @@
 import Foundation
+import AppleSiliconAccelerometer
 
 // MARK: - Impact Detector (High-Pass Filter + Multi-Timescale STA/LTA)
 // Matches the Go detector: high-pass filter (α=0.95) removes gravity,

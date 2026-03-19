@@ -1,6 +1,7 @@
 import Foundation
 import AVFoundation
 import Darwin
+import AppleSiliconAccelerometer
 
 // MARK: - Main
 
@@ -103,12 +104,17 @@ func spankMain() {
 
     // Start accelerometer
     let accelBuffer = AccelRingBuffer()
-    let reader = AccelReader(ringBuffer: accelBuffer)
+    let reader = AccelReader(ringBuffer: accelBuffer, logHandler: { msg in
+        debugLog(msg)
+    })
 
     let sensorThread = Thread {
         do {
             try reader.start()
             reader.runLoop()
+        } catch let error as AccelerometerError {
+            fputs("spank: sensor failed: \(error)\n", stderr)
+            exit(1)
         } catch {
             fputs("spank: sensor failed: \(error)\n", stderr)
             exit(1)

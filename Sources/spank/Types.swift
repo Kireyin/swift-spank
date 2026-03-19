@@ -50,12 +50,6 @@ struct SoundPack {
     }
 }
 
-struct AccelSample {
-    let x: Double
-    let y: Double
-    let z: Double
-}
-
 struct ImpactEvent {
     let time: Date
     let amplitude: Double
@@ -71,17 +65,11 @@ struct StdinCommand: Decodable {
 
 enum SpankError: Error, CustomStringConvertible {
     case noAudioFiles(String)
-    case sensorNotFound
-    case sensorOpenFailed(Int32)
 
     var description: String {
         switch self {
         case .noAudioFiles(let dir):
             return "no audio files found in \(dir)"
-        case .sensorNotFound:
-            return "accelerometer not found (Apple Silicon required)"
-        case .sensorOpenFailed(let code):
-            return "failed to open accelerometer (IOKit error \(code))"
         }
     }
 }

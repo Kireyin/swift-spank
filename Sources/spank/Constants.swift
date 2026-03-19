@@ -14,14 +14,8 @@ let defaultSensorPollInterval: TimeInterval = 0.01   // 10ms
 let defaultMaxSampleBatch: Int = 200
 let sensorStartupDelay: TimeInterval = 0.1            // 100ms
 
-// IOKit HID constants for Apple Silicon accelerometer (Bosch BMI286)
-let kPageVendor: Int = 0xFF00
-let kUsageAccel: Int = 3
-let kIMUReportLen: Int = 22
-let kIMUDataOffset: Int = 6
-let kIMUScale: Double = 65536.0
+// IMU decimation factor (used by ImpactDetector, not the library)
 let kIMUDecimation: Int = 8
-let kReportIntervalUS: Int = 1000
 
 // MARK: - Debug Logging
 

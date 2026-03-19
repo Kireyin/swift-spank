@@ -35,11 +35,23 @@ There are no tests, no Makefile, and no CI pipeline.
 
 ## Architecture
 
-The application lives in `Sources/spank/`, split across 7 files in a single SPM target (all types use `internal` access):
+The project has two SPM targets:
 
-- **`Constants.swift`** — Version, detection constants, IOKit HID constants, `debugMode` flag and `debugLog()` helper
-- **`Types.swift`** — Value types (`PlayMode`, `RuntimeTuning`, `SoundPack`, `AccelSample`, `ImpactEvent`, `StdinCommand`, `SpankError`), `FileManager.isDirectory` extension
-- **`Accelerometer.swift`** — `SpankState` (DispatchQueue-protected thread-safe state), `AccelRingBuffer` (NSLock ring buffer), `AccelReader` (IOKit HID device registration, raw 22-byte IMU report parsing)
+### Library: `AppleSiliconAccelerometer`
+
+A standalone, reusable library for reading the Apple Silicon accelerometer (Bosch BMI286 IMU via IOKit HID). Lives in `Sources/AppleSiliconAccelerometer/` with 3 files:
+
+- **`AccelSample.swift`** — `AccelSample` struct (x/y/z in g-force)
+- **`AccelRingBuffer.swift`** — Thread-safe NSLock ring buffer for samples
+- **`AccelReader.swift`** — IOKit HID device discovery, SPU driver wake-up, raw 22-byte report parsing, `AccelerometerError` enum. Takes an optional `LogHandler` closure instead of depending on a global debug flag. IOKit HID constants are file-private.
+
+### Executable: `spank`
+
+The application lives in `Sources/spank/`, split across 7 files (depends on `AppleSiliconAccelerometer`):
+
+- **`Constants.swift`** — Version, detection constants (`kIMUDecimation`), `debugMode` flag and `debugLog()` helper
+- **`Types.swift`** — Value types (`PlayMode`, `RuntimeTuning`, `SoundPack`, `ImpactEvent`, `StdinCommand`, `SpankError`), `FileManager.isDirectory` extension
+- **`Accelerometer.swift`** — `SpankState` (DispatchQueue-protected thread-safe state)
 - **`ImpactDetector.swift`** — High-pass filter (α=0.95) to remove gravity, multi-timescale STA/LTA detection across 3 tiers, amplitude estimation, severity classification, 300ms refractory period
 - **`Audio.swift`** — `SlapTracker` (exponential decay scoring, escalation logic), `amplitudeToVolume()`, `AudioPlayer` (AVAudioPlayer wrapper with volume/rate control)
 - **`CLI.swift`** — `CLIArgs` struct, `parseArgs()`, `printUsage()`, `startStdinReader()` (JSON stdin commands), `resolveAudioDir()`
