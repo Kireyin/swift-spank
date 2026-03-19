@@ -9,25 +9,33 @@ swift-spank is a macOS utility that detects physical slaps on Apple Silicon MacB
 ## Build & Run
 
 ```bash
-# Build
-swiftc -O -o spank spank.swift -framework IOKit -framework AVFoundation
+# Build (debug)
+swift build
+
+# Build (release)
+swift build -c release
 
 # Run (requires sudo for IOKit HID accelerometer access)
-sudo ./spank
+sudo swift run spank
 
 # Run with options
-sudo ./spank --sexy          # Escalation mode
-sudo ./spank --halo          # Halo death sounds
-sudo ./spank --fast          # Faster polling (4ms), higher sensitivity
-sudo ./spank --debug         # Verbose stderr logging
-sudo ./spank --stdio         # JSON-based stdio control for GUI integration
+sudo swift run spank --sexy          # Escalation mode
+sudo swift run spank --halo          # Halo death sounds
+sudo swift run spank --fast          # Faster polling (4ms), higher sensitivity
+sudo swift run spank --debug         # Verbose stderr logging
+sudo swift run spank --stdio         # JSON-based stdio control for GUI integration
+
+# Or run the release binary directly
+sudo .build/release/spank
 ```
 
-There are no tests, no Package.swift, no Makefile, and no CI pipeline. The project compiles directly with `swiftc`.
+> **Direct compilation** (no SPM): `swiftc -O -o spank Sources/spank/spank.swift -framework IOKit -framework AVFoundation`
+
+There are no tests, no Makefile, and no CI pipeline.
 
 ## Architecture
 
-The entire application lives in `spank.swift` (~1100 lines), organized into these logical sections:
+The entire application lives in `Sources/spank/spank.swift` (~1100 lines), organized into these logical sections:
 
 - **AccelReader / AccelRingBuffer** — IOKit HID device registration, raw 22-byte IMU report parsing, thread-safe ring buffer (NSLock) for accelerometer samples
 - **ImpactDetector** — High-pass filter (α=0.95) to remove gravity, multi-timescale STA/LTA (short-term/long-term average) detection across 3 tiers, amplitude estimation, severity classification, 300ms refractory period
