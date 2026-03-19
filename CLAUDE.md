@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-swift-spank is a macOS utility that detects physical slaps on Apple Silicon MacBooks via the accelerometer (Bosch BMI286 IMU accessed through IOKit HID) and plays audio responses. It's a single-file Swift application with no external dependencies.
+swift-spank is a macOS utility that detects physical slaps on Apple Silicon MacBooks via the accelerometer (Bosch BMI286 IMU accessed through IOKit HID) and plays audio responses. It's a Swift application with no external dependencies.
 
 ## Build & Run
 
@@ -29,21 +29,21 @@ sudo swift run spank --stdio         # JSON-based stdio control for GUI integrat
 sudo .build/release/spank
 ```
 
-> **Direct compilation** (no SPM): `swiftc -O -o spank Sources/spank/spank.swift -framework IOKit -framework AVFoundation`
+> **Direct compilation** (no SPM): `swiftc -O -o spank Sources/spank/*.swift -framework IOKit -framework AVFoundation`
 
 There are no tests, no Makefile, and no CI pipeline.
 
 ## Architecture
 
-The entire application lives in `Sources/spank/spank.swift` (~1100 lines), organized into these logical sections:
+The application lives in `Sources/spank/`, split across 7 files in a single SPM target (all types use `internal` access):
 
-- **AccelReader / AccelRingBuffer** — IOKit HID device registration, raw 22-byte IMU report parsing, thread-safe ring buffer (NSLock) for accelerometer samples
-- **ImpactDetector** — High-pass filter (α=0.95) to remove gravity, multi-timescale STA/LTA (short-term/long-term average) detection across 3 tiers, amplitude estimation, severity classification, 300ms refractory period
-- **AudioPlayer / SoundPack** — AVAudioPlayer wrapper with volume scaling (amplitude-based) and playback rate control; manages audio file collections from `audio/` subdirectories (pain, sexy, halo, custom)
-- **SlapTracker** — Rolling window slap frequency tracking with exponential decay (30s half-life), drives escalation logic for sexy mode (60 levels)
-- **CLIArgs** — Command-line argument parser
-- **SpankState** — Thread-safe state container (DispatchQueue-protected)
-- **Main loop** — DispatchSourceTimer for detection polling, CFRunLoop for IOKit HID event delivery, SIGINT/SIGTERM signal handling
+- **`Constants.swift`** — Version, detection constants, IOKit HID constants, `debugMode` flag and `debugLog()` helper
+- **`Types.swift`** — Value types (`PlayMode`, `RuntimeTuning`, `SoundPack`, `AccelSample`, `ImpactEvent`, `StdinCommand`, `SpankError`), `FileManager.isDirectory` extension
+- **`Accelerometer.swift`** — `SpankState` (DispatchQueue-protected thread-safe state), `AccelRingBuffer` (NSLock ring buffer), `AccelReader` (IOKit HID device registration, raw 22-byte IMU report parsing)
+- **`ImpactDetector.swift`** — High-pass filter (α=0.95) to remove gravity, multi-timescale STA/LTA detection across 3 tiers, amplitude estimation, severity classification, 300ms refractory period
+- **`Audio.swift`** — `SlapTracker` (exponential decay scoring, escalation logic), `amplitudeToVolume()`, `AudioPlayer` (AVAudioPlayer wrapper with volume/rate control)
+- **`CLI.swift`** — `CLIArgs` struct, `parseArgs()`, `printUsage()`, `startStdinReader()` (JSON stdin commands), `resolveAudioDir()`
+- **`main.swift`** — Entry point: `spankMain()` orchestration (sensor startup, signal handling, DispatchSourceTimer detection loop, CFRunLoop for IOKit HID)
 
 ## Key Conventions
 
