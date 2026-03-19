@@ -205,7 +205,8 @@ sudo launchctl unload /Library/LaunchDaemons/com.taigrr.spank.plist
 
 ## Credits
 
-Forked from https://github.com/taigrr/spank
+Based on Taigrr's' idea -> https://github.com/taigrr/spank
+Made with this Swift AppleSiliconAccelerometer wrapper -> https://github.com/Kireyin/AppleSiliconAccelerometer
 
 ## License
 
