@@ -19,7 +19,6 @@ swift build -c release
 sudo swift run spank
 
 # Run with options
-sudo swift run spank --sexy          # Escalation mode
 sudo swift run spank --halo          # Halo death sounds
 sudo swift run spank --fast          # Faster polling (4ms), higher sensitivity
 sudo swift run spank --debug         # Verbose stderr logging
@@ -47,7 +46,7 @@ The application lives in `Sources/spank/`, split across 7 files (depends on `App
 - **`Types.swift`** — Value types (`PlayMode`, `RuntimeTuning`, `SoundPack`, `ImpactEvent`, `StdinCommand`, `SpankError`), `FileManager.isDirectory` extension
 - **`Accelerometer.swift`** — `SpankState` (DispatchQueue-protected thread-safe state)
 - **`ImpactDetector.swift`** — High-pass filter (α=0.95) to remove gravity, multi-timescale STA/LTA detection across 3 tiers, amplitude estimation, severity classification, 300ms refractory period
-- **`Audio.swift`** — `SlapTracker` (exponential decay scoring, escalation logic), `amplitudeToVolume()`, `AudioPlayer` (AVAudioPlayer wrapper with volume/rate control)
+- **`Audio.swift`** — `SlapTracker` (exponential decay scoring), `amplitudeToVolume()`, `AudioPlayer` (AVAudioPlayer wrapper with volume/rate control)
 - **`CLI.swift`** — `CLIArgs` struct, `parseArgs()`, `printUsage()`, `startStdinReader()` (JSON stdin commands), `resolveAudioDir()`
 - **`main.swift`** — Entry point: `spankMain()` orchestration (sensor startup, signal handling, DispatchSourceTimer detection loop, CFRunLoop for IOKit HID)
 

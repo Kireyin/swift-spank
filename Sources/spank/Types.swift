@@ -4,7 +4,6 @@ import Foundation
 
 enum PlayMode {
     case random
-    case escalation
 }
 
 struct RuntimeTuning {

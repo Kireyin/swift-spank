@@ -26,11 +26,10 @@ func spankMain() {
 
     // Validate mutually exclusive modes
     var modeCount = 0
-    if cliArgs.sexyMode { modeCount += 1 }
     if cliArgs.haloMode { modeCount += 1 }
     if cliArgs.customPath != nil || !cliArgs.customFiles.isEmpty { modeCount += 1 }
     if modeCount > 1 {
-        fputs("--sexy, --halo, and --custom/--custom-files are mutually exclusive; pick one\n", stderr)
+        fputs("--halo and --custom/--custom-files are mutually exclusive; pick one\n", stderr)
         exit(1)
     }
 
@@ -75,8 +74,6 @@ func spankMain() {
         pack = SoundPack(name: "custom", mode: .random, files: cliArgs.customFiles, isCustom: true, dir: "")
     } else if let customPath = cliArgs.customPath {
         pack = SoundPack(name: "custom", mode: .random, files: [], isCustom: true, dir: customPath)
-    } else if cliArgs.sexyMode {
-        pack = SoundPack(name: "sexy", mode: .escalation, files: [], isCustom: false, dir: "\(audioDir)/sexy")
     } else if cliArgs.haloMode {
         pack = SoundPack(name: "halo", mode: .random, files: [], isCustom: false, dir: "\(audioDir)/halo")
     } else {

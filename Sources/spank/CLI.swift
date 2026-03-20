@@ -3,7 +3,6 @@ import Foundation
 // MARK: - CLI Argument Parsing
 
 struct CLIArgs {
-    var sexyMode = false
     var haloMode = false
     var customPath: String?
     var customFiles: [String] = []
@@ -30,16 +29,12 @@ func printUsage() {
 
     Requires sudo (for IOKit HID access to the accelerometer).
 
-    Use --sexy for a different experience. In sexy mode, the more you slap
-    within a minute, the more intense the sounds become.
-
     Use --halo to play random audio clips from Halo soundtracks on each slap.
 
     USAGE:
       sudo spank [FLAGS]
 
     FLAGS:
-      -s, --sexy               Enable sexy mode
       -H, --halo               Enable halo mode
       -c, --custom <path>      Path to custom MP3 audio directory
       --custom-files <files>   Comma-separated list of custom MP3 files
@@ -62,8 +57,6 @@ func parseArgs() -> CLIArgs {
     var i = 1
     while i < argv.count {
         switch argv[i] {
-        case "--sexy", "-s":
-            args.sexyMode = true
         case "--halo", "-H":
             args.haloMode = true
         case "--custom", "-c":

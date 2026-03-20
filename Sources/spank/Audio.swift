@@ -8,14 +8,11 @@ class SlapTracker {
     private var lastTime: Date?
     private var total: Int = 0
     private let halfLife: Double = decayHalfLife
-    private let scale: Double
     private let pack: SoundPack
     private let lock = NSLock()
 
     init(pack: SoundPack, cooldown: TimeInterval) {
         self.pack = pack
-        let ssMax = 1.0 / (1.0 - pow(0.5, cooldown / decayHalfLife))
-        self.scale = (ssMax - 1) / log(Double(pack.files.count + 1))
     }
 
     func record(now: Date) -> (slapNumber: Int, score: Double) {
@@ -33,13 +30,7 @@ class SlapTracker {
     }
 
     func getFile(score: Double) -> String {
-        if pack.mode == .random {
-            return pack.files[Int.random(in: 0..<pack.files.count)]
-        }
-
-        let maxIdx = pack.files.count - 1
-        let idx = min(Int(Double(pack.files.count) * (1.0 - exp(-(score - 1) / scale))), maxIdx)
-        return pack.files[idx]
+        return pack.files[Int.random(in: 0..<pack.files.count)]
     }
 }
 
